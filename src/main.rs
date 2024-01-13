@@ -23,6 +23,11 @@ async fn main() {
 
     let store = Store::new("postgres://postgres:800320@127.0.0.1:5432/rustwebdev").await;
 
+    sqlx::migrate!()
+        .run(&store.clone().connection)
+        .await
+        .expect("Cannot run migration");
+
     let store_filter = warp::any().map(move || store.clone());
 
     let cors = warp::cors()
