@@ -9,4 +9,13 @@ pub struct Question {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
-pub struct QuestionId(pub String);
+pub struct QuestionId(pub i32);
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct NewQuestion {
+    pub title: String,
+    pub content: String,
+    pub tags: Option<Vec<String>>,
+}
+
+pub type UpdateQuestion = NewQuestion;

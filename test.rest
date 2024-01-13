@@ -1,0 +1,17 @@
+@publicPath = http://localhost:3030
+
+GET {{publicPath}}/questions
+
+###
+
+POST {{publicPath}}/questions
+Content-Type: application/json
+
+{
+  "title": "sdf",
+  "content": "sdfsdf",
+  "tags": ["1", "2"]
+}
+
+###
+DELETE {{publicPath}}/questions/1

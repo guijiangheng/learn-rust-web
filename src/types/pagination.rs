@@ -2,27 +2,23 @@ use std::collections::HashMap;
 
 use crate::errors::Error;
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Pagination {
-    pub start: usize,
-    pub end: usize,
+    pub limit: Option<i32>,
+    pub offset: i32,
 }
 
 pub fn extract_pagination(params: HashMap<String, String>) -> Result<Pagination, Error> {
-    if !params.contains_key("start") || !params.contains_key("end") {
+    if !params.contains_key("limit") || !params.contains_key("offset") {
         return Err(Error::MissingParameters);
     }
 
     Ok(Pagination {
-        start: params
-            .get("start")
+        limit: Some(params.get("limit").unwrap().parse().map_err(Error::Parse)?),
+        offset: params
+            .get("offset")
             .unwrap()
-            .parse::<usize>()
-            .map_err(Error::ParseError)?,
-        end: params
-            .get("end")
-            .unwrap()
-            .parse::<usize>()
-            .map_err(Error::ParseError)?,
+            .parse()
+            .map_err(Error::Parse)?,
     })
 }
