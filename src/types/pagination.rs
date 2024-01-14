@@ -14,11 +14,17 @@ pub fn extract_pagination(params: HashMap<String, String>) -> Result<Pagination,
     }
 
     Ok(Pagination {
-        limit: Some(params.get("limit").unwrap().parse().map_err(Error::Parse)?),
+        limit: Some(
+            params
+                .get("limit")
+                .unwrap()
+                .parse()
+                .map_err(Error::ParseInt)?,
+        ),
         offset: params
             .get("offset")
             .unwrap()
             .parse()
-            .map_err(Error::Parse)?,
+            .map_err(Error::ParseInt)?,
     })
 }

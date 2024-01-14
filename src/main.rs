@@ -7,6 +7,7 @@ use tracing_subscriber::fmt::format::FmtSpan;
 use warp::{http::Method, Filter};
 
 mod errors;
+mod profanity;
 mod routes;
 mod store;
 mod types;
@@ -40,15 +41,7 @@ async fn main() {
         .and(warp::path::end())
         .and(warp::query())
         .and(store_filter.clone())
-        .and_then(routes::question::get_questions)
-        .with(warp::trace(|info| {
-            info_span!(
-                "get_questions request",
-                method = %info.method(),
-                path = %info.path(),
-                id = %uuid::Uuid::new_v4()
-            )
-        }));
+        .and_then(routes::question::get_questions);
 
     let update_question = warp::put()
         .and(warp::path("questions"))
@@ -85,7 +78,14 @@ async fn main() {
         .or(delete_question)
         .or(add_answer)
         .with(cors)
-        .with(warp::trace::request())
+        .with(warp::trace(|info| {
+            info_span!(
+                "",
+                method = %info.method(),
+                path = %info.path(),
+                id = %uuid::Uuid::new_v4()
+            )
+        }))
         .recover(return_error);
 
     warp::serve(routes).run(([127, 0, 0, 1], 3030)).await;

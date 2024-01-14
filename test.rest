@@ -8,10 +8,10 @@ POST {{publicPath}}/questions
 Content-Type: application/json
 
 {
-  "title": "sdf",
-  "content": "sdfsdf",
+  "title": "this is fuck, this is",
+  "content": "this is fuck you, this",
   "tags": ["1", "2"]
 }
 
 ###
-DELETE {{publicPath}}/questions/1
+DELETE {{publicPath}}/questions/6
